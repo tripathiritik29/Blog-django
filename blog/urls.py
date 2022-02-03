@@ -1,7 +1,12 @@
 from django.contrib import admin
-from django.urls import path, include
+from .models import Post
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('blog.urls')),
-]
+
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'slug', 'status', 'created_on')
+    list_filter = ("status",)
+    search_fields = ['title', 'content'] 
+    prepopulated_fields = {'slug': ('title',)}
+
+
+admin.site.register(Post, PostAdmin)
